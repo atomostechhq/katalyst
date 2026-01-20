@@ -1,6 +1,6 @@
 "use client";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // Base interface that users can extend
 export interface BaseNestedItem {

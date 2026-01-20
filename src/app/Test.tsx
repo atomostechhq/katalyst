@@ -59,8 +59,10 @@ import {
   RiInformationLine,
   RiInstagramLine,
   RiLinkedinLine,
+  RiMoonLine,
   RiSearch2Line,
   RiSettings4Line,
+  RiSunLine,
   RiTwitterLine,
 } from "react-icons/ri";
 import Button from "@/components/Button";
@@ -141,12 +143,6 @@ const footerItems = [
   },
 ];
 
-// Sample industry data that matches the BaseNestedItem interface
-// interface IndustryItem {
-//   _id: string;
-//   name: string;
-//   children?: IndustryItem[];
-// }
 const industryList = {
   data: [
     {
@@ -337,12 +333,6 @@ const industryList = {
   ],
 };
 
-const singleOptions = [
-  { label: "Option 1", value: 1 },
-  { label: "Option 2", value: 2 },
-  { label: "Option 3", value: 3 },
-];
-
 const iconsArray = [
   { icon: <RiTwitterLine />, link: "https://twitter.com" },
   { icon: <RiInstagramLine />, link: "https://instagram.com" },
@@ -357,22 +347,21 @@ const dummyData = Array.from({ length: 100 }, (_, index) => ({
 
 const Test = () => {
   const { switchDark, switchLight } = useTheme();
-  // const [selectedItem, setSelectedItem] = useState<IndustryItem | null>(null);
+  const [isDark, setIsDark] = useState(false);
 
-  // toggle
-  const [isChecked, setIsChecked] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [multiSelect, setMultiSelect] = useState<Option[]>([]);
-  const [singleSelect, setSingleSelect] = useState<Option[]>([]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setIsDark(checked);
 
-  // console.log("showMenu", showMenu);
-  // slider
-  const [sliderValue, setSliderValue] = useState<number>(50);
-
-  const handleSliderChange = (value: number) => {
-    setSliderValue(value);
+    if (checked) {
+      switchDark();
+    } else {
+      switchLight();
+    }
   };
 
+  // navbar
+  const [showMenu, setShowMenu] = useState(false);
   useEffect(() => {
     // Prevent scrolling on the body when the menu is open
     if (showMenu) {
@@ -381,55 +370,20 @@ const Test = () => {
       document.body.style.overflow = "";
     }
 
-    // Clean up to remove overflow lock when component unmounts
     return () => {
       document.body.style.overflow = "";
     };
   }, [showMenu]);
 
-  const rowsPerPage = 5;
-  const [page, setPage] = useState(0);
-
-  const handleChangePage = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const paginatedData = dummyData.slice(
-    page * rowsPerPage,
-
-    page * rowsPerPage + rowsPerPage,
-  );
-
+  // otp
   const [otp, setOtp] = useState("");
 
-  const [isAllExpanded, setIsAllExpanded] = useState(false);
+  // toggle
+  const [isChecked, setIsChecked] = useState(false);
 
-  // drawer
-  type DrawerPosition = "top" | "right" | "bottom" | "left";
-  const [openPosition, setOpenPosition] = useState<DrawerPosition | undefined>(
-    undefined,
-  );
-
-  const positions: DrawerPosition[] = ["top", "right", "bottom", "left"];
-
-  // modal
-  const [showModal, setShowModal] = useState(false);
-
-  // tabs
-  const [value, setValue] = useState("1");
-
-  const handleTabChange = (newValue: string) => {
-    setValue(newValue);
-  };
-
-  // popover
-  const [isOpen, setIsOpen] = useState(false);
-
-  // treeview
-  const [selected, setSelected] = useState<string | null>(null);
-
-  // floating button
-  const [showButton, setShowButton] = useState(false);
+  // dropdown
+  const [multiSelect, setMultiSelect] = useState<Option[]>([]);
+  const [singleSelect, setSingleSelect] = useState<Option[]>([]);
 
   // file upload
   const [items, setItems] = useState<UploadItem[]>([]);
@@ -452,19 +406,6 @@ const Test = () => {
       prev.map((item) => (item.id === id ? { ...item, ...updates } : item)),
     );
   };
-
-  // const handleUpload = async (
-  //   file: File,
-  //   onProgress: (progress: number) => void
-  // ) => {
-  //   // Simulate upload with progress
-  //   for (let progress = 0; progress <= 100; progress += 10) {
-  //     await new Promise((resolve) => setTimeout(resolve, 200));
-  //     onProgress(progress);
-  //   }
-  //   // Return the file URL (in real app, this would be from your API)
-  //   return URL.createObjectURL(file);
-  // };
 
   const handleUpload = async (
     file: File,
@@ -496,6 +437,56 @@ const Test = () => {
       window.open(item.previewUrl, "_blank");
     }
   };
+
+  // treeview
+  const [selected, setSelected] = useState<string | null>(null);
+
+  // slider
+  const [sliderValue, setSliderValue] = useState<number>(50);
+
+  const handleSliderChange = (value: number) => {
+    setSliderValue(value);
+  };
+
+  const rowsPerPage = 5;
+  const [page, setPage] = useState(0);
+
+  const handleChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const paginatedData = dummyData.slice(
+    page * rowsPerPage,
+
+    page * rowsPerPage + rowsPerPage,
+  );
+
+  const [isAllExpanded, setIsAllExpanded] = useState(false);
+
+  // drawer
+  type DrawerPosition = "top" | "right" | "bottom" | "left";
+  const [openPosition, setOpenPosition] = useState<DrawerPosition | undefined>(
+    undefined,
+  );
+
+  const positions: DrawerPosition[] = ["top", "right", "bottom", "left"];
+
+  // modal
+  const [showModal, setShowModal] = useState(false);
+
+  // tabs
+  const [value, setValue] = useState("1");
+
+  const handleTabChange = (newValue: string) => {
+    setValue(newValue);
+  };
+
+  // popover
+  const [isOpen, setIsOpen] = useState(false);
+
+  // floating button
+  const [showButton, setShowButton] = useState(false);
+
   // notice
   const [notice, setNotice] = useState(false);
 
@@ -509,25 +500,6 @@ const Test = () => {
 
   return (
     <div className="bg-light dark:bg-dark">
-      {/* <header className="p-4 transition-colors duration-300 flex justify-between items-center sticky top-4 backdrop-blur-md mx-4 rounded-full z-[1000000]">
-        <Typography variant={"h6"}>Katalyst:</Typography>
-        <Paragraph variant={"b2"}>Current theme: {theme}</Paragraph>
-        <div className="space-x-2">
-          <button
-            onClick={switchLight}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
-          >
-            Light Mode
-          </button>
-          <button
-            onClick={switchDark}
-            className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 focus:outline-none"
-          >
-            Dark Mode
-          </button>
-        </div>
-      </header> */}
-
       <Typography variant="h6">Top Nav Glass</Typography>
       <div className="px-[30px] mobile:mx-0 tablet:mx-0 rounded-radius-md transition-colors duration-300 sticky top-2 backdrop-blur-md z-[100] border-t border-b border-b-[#0707071F] border-[#FFFFFF29]">
         <header className="w-full p-4 flex justify-between items-center h-[62px] tablet:h-[56px]">
@@ -539,22 +511,15 @@ const Test = () => {
           />
           <div className="flex gap-4 items-center">
             <section className="flex gap-1 items-center">
-              <Chip
-                className="cursor-pointer"
-                size="sm"
-                variant="primary"
-                onClick={switchLight}
-              >
-                Light Mode
-              </Chip>
-              <Chip
-                className="cursor-pointer"
-                variant="glass"
-                size="sm"
-                onClick={switchDark}
-              >
-                Dark Mode
-              </Chip>
+              <Toggle
+                id="themeToggle"
+                size="lg"
+                icon={
+                  !isDark ? <RiSunLine size={14} /> : <RiMoonLine size={14} />
+                }
+                checked={isDark}
+                onChange={handleChange}
+              />
             </section>
             <span
               className="hidden tablet:inline-block  text-dark dark:text-light"
@@ -570,7 +535,8 @@ const Test = () => {
         </header>
       </div>
 
-      <div className="my-10 mx-10 flex items-center flex-wrap gap-5">
+      <section className="my-10 mx-10 flex items-center gap-5">
+        <Typography variant="h6">Nested Dropdown: </Typography>
         <NestedDropdown
           data={industryList?.data || []}
           onSelect={(_, path) => {
@@ -579,134 +545,10 @@ const Test = () => {
           }}
           placeholder="Select Parent"
         />
-
-        {/* <section>
-          <h1>Custom Width and Height</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected Path IDs:", pathIds);
-            }}
-            placeholder="Choose Category"
-            width="300px"
-            height="250px"
-          />
-        </section>
-        <section>
-          <h1>Disabled State</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            disabled={true}
-          />
-        </section>
-        <section>
-          <h1>With Error State</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            disabled={true}
-          />
-        </section>
-        <section>
-          <h1>Controlled Component</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(item, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              setSelectedItem(item);
-              console.log("Selected IDs:", pathIds);
-            }}
-            placeholder="Select Parent"
-            value={selectedItem}
-          />
-        </section>
-        <section>
-          <h1>Without Clear Button</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            clearable={false}
-          />
-        </section>
-        <section>
-          <h1>Keep Dropdown Open After Selection</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            closeOnSelect={false}
-          />
-        </section>
-        <section>
-          <h1>With Custom Search Placeholder</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            searchPlaceholder="Search industries..."
-            // searchDebounce={500}
-          />
-        </section>
-        <section>
-          <h1>With Loading State</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            loading={true}
-          />
-        </section>
-        <section>
-          <h1>Custom Styling</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            className="custom-dropdown"
-            width="350px"
-          />
-        </section>
-        <section>
-          <h1>No Results Text Customized</h1>
-          <NestedDropdown
-            data={[]}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            noResultsText="No industries found. Try another search."
-          />
-        </section> */}
-      </div>
+      </section>
 
       <main className="space-y-5 p-4">
+        {/* Typography */}
         <section className="space-y-3">
           <Typography variant="h6">Typography</Typography>
           <Typography variant="h1">H1 Headline</Typography>
@@ -716,6 +558,7 @@ const Test = () => {
           <Typography variant="h5">H5 Headline</Typography>
           <Typography variant="h6">H6 Headline</Typography>
         </section>
+        {/* Paragraph */}
         <section className="space-y-3">
           <Typography variant="h6">Paragraph</Typography>
           <Paragraph>The quick brown fox jumps over the lazy dog</Paragraph>
@@ -729,6 +572,7 @@ const Test = () => {
             The quick brown fox jumps over the lazy dog
           </Paragraph>
         </section>
+        {/* Caption */}
         <section className="space-y-3">
           <Typography variant="h6">Caption</Typography>
           <br />
@@ -738,6 +582,7 @@ const Test = () => {
           <br />
           <Caption>The quick brown fox jumps over the lazy dog</Caption>
         </section>
+        {/* Label */}
         <section className="space-y-3">
           <Typography variant="h6">Label</Typography>
           <Label size={"sm"}>This is a Label</Label>
@@ -748,7 +593,8 @@ const Test = () => {
             This is a Label
           </Label>
         </section>
-        <section className="space-y-5 min-h-[200px]">
+        {/* Input */}
+        <section className="space-y-3 min-h-[200px]">
           <Typography variant="h6">Input</Typography>
           <Input
             type="text"
@@ -808,7 +654,8 @@ const Test = () => {
             />
           </div>
         </section>
-        <section className="space-y-4">
+        {/* OTP */}
+        <section className="space-y-3">
           <Typography variant="h6">OTP</Typography>
           <div className="space-y-2">
             <OTPInput type="text" length={4} onChange={setOtp} />
@@ -820,8 +667,8 @@ const Test = () => {
           </div>
           <Caption variant={"md"}>Note: you can also paste values</Caption>
         </section>
-        {/* dropdown */}
-        <section className="space-y-5">
+        {/* Checkbox */}
+        <section className="space-y-3">
           <Typography variant="h6">Checkbox</Typography>
           <div className="flex items-center gap-2">
             <Checkbox id="check1" />
@@ -848,7 +695,8 @@ const Test = () => {
             </Label>
           </div>
         </section>
-        <section className="space-y-5">
+        {/* Toggle */}
+        <section className="space-y-3">
           <Typography variant="h6">Toggle</Typography>
           <div className="flex items-center gap-2">
             <Toggle id="smallToggle" size="sm" />
@@ -900,7 +748,8 @@ const Test = () => {
             </Label>
           </div>
         </section>
-        <section className="flex flex-col gap-1">
+        {/* Radio */}
+        <section className="space-y-3">
           <Typography variant="h6">Radio</Typography>
           <section className="flex items-center gap-4">
             <h1>Size with Text:</h1>
@@ -956,83 +805,90 @@ const Test = () => {
             </div>
           </section>
         </section>
-        <section className="flex gap-4 items-center my-4 ">
-          <Typography variant="h6">Chips Variant</Typography>
-          <Chip
-            startIcon={<LuAnnoyed />}
-            endIcon={<LuAngry />}
-            variant="primary"
-            size="md"
-          >
-            Primary
-          </Chip>
-          <Chip variant="secondary" size="md">
-            Secondary
-          </Chip>
-          <Chip variant="default" size="md">
-            Default
-          </Chip>
-          <Chip variant="glass" size="md">
-            Glass
-          </Chip>
+        {/* Chip */}
+        <section className="space-y-3">
+          <Typography variant="h6">Chips</Typography>
+          <div className="flex gap-4 items-center">
+            <Typography variant="h6">Chips Variant</Typography>
+            <Chip
+              startIcon={<LuAnnoyed />}
+              endIcon={<LuAngry />}
+              variant="primary"
+              size="md"
+            >
+              Primary
+            </Chip>
+            <Chip variant="secondary" size="md">
+              Secondary
+            </Chip>
+            <Chip variant="default" size="md">
+              Default
+            </Chip>
+            <Chip variant="glass" size="md">
+              Glass
+            </Chip>
+          </div>
+          <div className="flex gap-4 items-center my-4">
+            <Typography variant={"h6"}>Sizes - </Typography>
+            <Chip variant="default" size="xs">
+              Default
+            </Chip>
+            <Chip endIcon={<LuHeart />} variant="primary" size="sm">
+              Solid
+            </Chip>
+            <Chip variant="primary" size="md">
+              Primary
+            </Chip>
+            <Chip variant="primary" size="lg">
+              Secondary
+            </Chip>
+          </div>
         </section>
-        <section className="flex gap-4 items-center my-4">
-          <Typography variant={"h6"}>Sizes - </Typography>
-          <Chip variant="default" size="xs">
-            Default
-          </Chip>
-          <Chip endIcon={<LuHeart />} variant="primary" size="sm">
-            Solid
-          </Chip>
-          <Chip variant="primary" size="md">
-            Primary
-          </Chip>
-          <Chip variant="primary" size="lg">
-            Secondary
-          </Chip>
+        {/* Dropdown */}
+        <section className="space-y-3">
+          <Typography variant="h6">Dropdown</Typography>
+          <div className="flex flex-wrap items-center gap-10">
+            <Dropdown
+              options={[
+                { label: "High", value: "High", disabledOption: true },
+                { label: "Medium", value: "Medium" },
+                { label: "Low", value: "Low" },
+                { label: "High", value: "High" },
+                { label: "Medium", value: "Medium" },
+                { label: "Low", value: "Low" },
+                { label: "High", value: "High" },
+                { label: "Medium", value: "Medium" },
+                { label: "Low", value: "Low" },
+              ]}
+              selected={multiSelect}
+              setSelected={setMultiSelect}
+              width="300px"
+              dropdownText="Multiple Dropdown"
+              multiple
+              search
+              dropdownFooter={true}
+              onApply={() => {
+                alert("Apply button clicked");
+              }}
+            />
+            <Dropdown
+              options={[
+                { label: "Option 1", value: 1 },
+                { label: "Option 2", value: 2 },
+                { label: "Option 3", value: 3 },
+              ]}
+              selected={singleSelect}
+              icon={<RiGlobalLine size={16} />}
+              setSelected={setSingleSelect}
+              dropdownText="Single Dropdown"
+              info="info"
+              width="300px"
+            />
+          </div>
         </section>
-        <div className="flex flex-wrap items-center gap-10">
-          <h1 className="text-lg">Multiple Dropdown</h1>
-          <Dropdown
-            options={[
-              { label: "High", value: "High", disabledOption: true },
-              { label: "Medium", value: "Medium" },
-              { label: "Low", value: "Low" },
-              { label: "High", value: "High" },
-              { label: "Medium", value: "Medium" },
-              { label: "Low", value: "Low" },
-              { label: "High", value: "High" },
-              { label: "Medium", value: "Medium" },
-              { label: "Low", value: "Low" },
-            ]}
-            selected={multiSelect}
-            setSelected={setMultiSelect}
-            width="300px"
-            dropdownText="Test Test"
-            multiple
-            search
-            dropdownFooter={true}
-            onApply={() => {
-              alert("Apply button clicked");
-            }}
-          />
-
-          <Dropdown
-            options={singleOptions}
-            selected={singleSelect}
-            icon={<RiGlobalLine size={16} />}
-            setSelected={setSingleSelect}
-            dropdownText="single text"
-            info="info"
-            width="300px"
-          />
-        </div>
-
-        {/* file upload */}
-        <div className="w-full mx-auto">
-          <Typography variant="h5" className="mb-4">
-            File Upload
-          </Typography>
+        {/* File Upload */}
+        <section className="space-y-3">
+          <Typography variant="h6">File Upload</Typography>
           <FileUploadControl
             items={items}
             onAddFiles={handleAddFiles}
@@ -1045,162 +901,152 @@ const Test = () => {
             maxSizeMB={15}
             hintText="Drag and drop files or click to upload"
           />
-        </div>
-
-        <section className="p-5">
-          <h1 className="text-display-sm text-primary-600">
-            Dropdown Examples:
-          </h1>
-
-          {/* Example 1: Basic Dropdown */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Basic Dropdown</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Basic Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64">
-                <DropdownMenuLabel>Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => console.log("Profile clicked")}
-                >
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => console.log("Settings clicked")}
-                >
-                  Settings
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>Disabled Item</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Dropdown with Submenu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Menu with Submenu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64">
-                <DropdownMenuLabel>Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-
-                {/* Submenu Example */}
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>More Options</DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                    <DropdownMenuItem>API Keys</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Menu One</DropdownMenuItem>
-                <DropdownMenuItem>Menu Two</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Example 3: Different Alignment */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Left Aligned Menu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Left Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="left">
-                <DropdownMenuItem onClick={() => alert("Item 1 clicked")}>
-                  Item 1
-                </DropdownMenuItem>
-                <DropdownMenuItem>Item 2</DropdownMenuItem>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Submenu</DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem>Sub Item 1</DropdownMenuItem>
-                    <DropdownMenuItem>Sub Item 2</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Example 4: Center Aligned Menu */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Center Aligned Menu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Center Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem>Center Item 1</DropdownMenuItem>
-                <DropdownMenuItem>Center Item 2</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Example 5: Complex Nested Structure */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Complex Nested Menu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Complex Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-72">
-                <DropdownMenuLabel>User Settings</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <div className="flex items-center gap-2">
-                    <span>👤</span>
-                    <span>Profile</span>
-                  </div>
-                </DropdownMenuItem>
-
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    <div className="flex items-center gap-2">
-                      <span>⚙️</span>
-                      <span>Settings</span>
-                    </div>
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger>
-                        Appearance
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem>Light Mode</DropdownMenuItem>
-                        <DropdownMenuItem>Dark Mode</DropdownMenuItem>
-                        <DropdownMenuItem>System</DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-                    <DropdownMenuItem>Notifications</DropdownMenuItem>
-                    <DropdownMenuItem>Privacy</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600 hover:bg-red-50">
-                  <div className="flex items-center gap-2">
-                    <span>🚪</span>
-                    <span>Logout</span>
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
         </section>
-        <div className="grid grid-cols-2 gap-4 p-8 w-full whitespace-nowrap">
-          {/* Top-Left */}
-          <div className="flex justify-center gap-6">
+        {/* Dropdown Menu */}
+        <section className="space-y-3">
+          <Typography variant="h6">Dropdown Menu</Typography>
+          <div className="flex flex-wrap items-center gap-3">
+            <div>
+              <Paragraph variant={"b3"}>Basic Dropdown</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Basic Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64">
+                  <DropdownMenuLabel>Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => console.log("Profile clicked")}
+                  >
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => console.log("Settings clicked")}
+                  >
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem disabled>Disabled Item</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Dropdown with Submenu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Menu with Submenu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64">
+                  <DropdownMenuLabel>Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+
+                  {/* Submenu Example */}
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      More Options
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem>Billing</DropdownMenuItem>
+                      <DropdownMenuItem>Support</DropdownMenuItem>
+                      <DropdownMenuItem>API Keys</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Menu One</DropdownMenuItem>
+                  <DropdownMenuItem>Menu Two</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Left Aligned Menu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Left Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="left">
+                  <DropdownMenuItem onClick={() => alert("Item 1 clicked")}>
+                    Item 1
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>Item 2</DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Submenu</DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem>Sub Item 1</DropdownMenuItem>
+                      <DropdownMenuItem>Sub Item 2</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Center Aligned Menu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Center Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+                  <DropdownMenuItem>Center Item 1</DropdownMenuItem>
+                  <DropdownMenuItem>Center Item 2</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Complex Nested Menu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Complex Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-72">
+                  <DropdownMenuLabel>User Settings</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <div className="flex items-center gap-2">
+                      <span>👤</span>
+                      <span>Profile</span>
+                    </div>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <div className="flex items-center gap-2">
+                        <span>⚙️</span>
+                        <span>Settings</span>
+                      </div>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                          Appearance
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem>Light Mode</DropdownMenuItem>
+                          <DropdownMenuItem>Dark Mode</DropdownMenuItem>
+                          <DropdownMenuItem>System</DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuSub>
+                      <DropdownMenuItem>Notifications</DropdownMenuItem>
+                      <DropdownMenuItem>Privacy</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-red-600 hover:bg-red-50">
+                    <div className="flex items-center gap-2">
+                      <span>🚪</span>
+                      <span>Logout</span>
+                    </div>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+          <div className="flex items-center gap-6 p-5">
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Top</Button>
+                <Button size={"xs"}>Top</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="top">
                 <DropdownMenuLabel>Top Position</DropdownMenuLabel>
@@ -1219,7 +1065,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Bottom</Button>
+                <Button size={"xs"}>Bottom</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="bottom">
                 <DropdownMenuLabel>Bottom Position</DropdownMenuLabel>
@@ -1238,7 +1084,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Left</Button>
+                <Button size={"xs"}>Left</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="left">
                 <DropdownMenuLabel>Left Position</DropdownMenuLabel>
@@ -1257,7 +1103,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Right</Button>
+                <Button size={"xs"}>Right</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="right">
                 <DropdownMenuLabel>Right Position</DropdownMenuLabel>
@@ -1276,7 +1122,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Center</Button>
+                <Button size={"xs"}>Center</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="center">
                 <DropdownMenuLabel>Center Aligned</DropdownMenuLabel>
@@ -1295,7 +1141,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Wide Menu</Button>
+                <Button size={"xs"}>Wide Menu</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-80" align="end">
                 <DropdownMenuLabel>Wide Menu (320px)</DropdownMenuLabel>
@@ -1326,13 +1172,14 @@ const Test = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </div>
-        {/* tree view */}
-        <section className="my-5 w-1/2 border p-5">
-          <h1 className="text-display-sm text-primary-600">Tree View:</h1>
+        </section>
+        {/* Tree View */}
+        <section className="space-y-3">
+          <Typography variant="h6">Tree View</Typography>
           <TreeView
             aria-label="Project files"
             defaultExpandedIds={["frontend"]}
+            className="w-1/2 border border-gray-200 p-3 rounded-md"
           >
             {/* FRONTEND SECTION */}
             <TreeView.Item
@@ -1504,11 +1351,10 @@ const Test = () => {
               </TreeView.SubTree>
             </TreeView.Item>
           </TreeView>
-        </section>
-        <div className="border rounded-lg p-2 bg-white dark:bg-gray-950">
           <TreeView
             aria-label="Project files"
             defaultExpandedIds={["frontend"]}
+            className="w-1/2 border border-gray-200 p-3 rounded-md"
           >
             {/* FRONTEND */}
             <TreeView.Item id="frontend">
@@ -1558,13 +1404,11 @@ const Test = () => {
               Settings
             </TreeView.Item>
           </TreeView>
-
-          <div className="mt-4 text-xs text-gray-500 px-2">
-            Selected: {selected || "None"}
-          </div>
-        </div>
-        <section>
-          <TreeView aria-label="Files changed" defaultExpandedIds={["src"]}>
+          <TreeView
+            aria-label="Files changed"
+            defaultExpandedIds={["src"]}
+            className="w-1/2 border border-gray-200 p-3 rounded-md"
+          >
             <TreeView.Item
               id="src"
               onSelect={setSelected}
@@ -1619,45 +1463,57 @@ const Test = () => {
               </TreeView.TrailingVisual>
             </TreeView.Item>
           </TreeView>
-        </section>
-        <section className="my-5">
-          <h1>Allow multiple expanded (default)</h1>
-          {/* <TreeView aria-label="Example Tree" expandTopLevelByDefault> */}
-          <TreeView aria-label="Example Tree">
-            <TreeView.Item id="1">
-              Parent 1
-              <TreeView.SubTree>
-                <TreeView.Item id="1.1">Child 1</TreeView.Item>
-                <TreeView.Item id="1.2">Child 2</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
+          <div className="my-5">
+            <h1>Allow multiple expanded (default)</h1>
+            <TreeView
+              aria-label="Example Tree"
+              className="w-1/2 border border-gray-200 p-3 rounded-md"
+            >
+              <TreeView.Item id="1">
+                Parent 1
+                <TreeView.SubTree>
+                  <TreeView.Item id="1.1">Child 1</TreeView.Item>
+                  <TreeView.Item id="1.2">Child 2</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
 
-            <TreeView.Item id="2">
-              Parent 2
-              <TreeView.SubTree>
-                <TreeView.Item id="2.1">Child A</TreeView.Item>
-                <TreeView.Item id="2.2">Child B</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-          </TreeView>
+              <TreeView.Item id="2">
+                Parent 2
+                <TreeView.SubTree>
+                  <TreeView.Item id="2.1">Child A</TreeView.Item>
+                  <TreeView.Item id="2.2">Child B</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
+            </TreeView>
+          </div>
+          <div>
+            <h1>Treeview Mode (only one expanded)</h1>
+            <TreeView
+              aria-label="Accordion Tree"
+              allowMultiple={false}
+              className="w-1/2 border border-gray-200 p-3 rounded-md"
+            >
+              <TreeView.Item id="1">
+                Section 1
+                <TreeView.SubTree>
+                  <TreeView.Item id="1.1">Item A</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
+              <TreeView.Item id="2">
+                Section 2
+                <TreeView.SubTree>
+                  <TreeView.Item id="2.1">Item B</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
+            </TreeView>
+          </div>
         </section>
-        <section className="my-5">
-          <h1>Treeview Mode (only one expanded)</h1>
-          <TreeView aria-label="Accordion Tree" allowMultiple={false}>
-            <TreeView.Item id="1">
-              Section 1
-              <TreeView.SubTree>
-                <TreeView.Item id="1.1">Item A</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-            <TreeView.Item id="2">
-              Section 2
-              <TreeView.SubTree>
-                <TreeView.Item id="2.1">Item B</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-          </TreeView>
-        </section>
+        <div className="border rounded-lg p-2 bg-white dark:bg-gray-950">
+          <div className="mt-4 text-xs text-gray-500 px-2">
+            Selected: {selected || "None"}
+          </div>
+        </div>
+
         <section className="space-y-4">
           <Typography variant={"h6"}>Pricing Cards</Typography>
           <div className="flex flex-wrap items-center gap-spacing-lg">
@@ -2257,7 +2113,10 @@ const Test = () => {
               Button
             </Button>
           </div>
-          <div className="flex items-center gap-3 div-glass2 py-5 px-4">
+          <div
+            className="flex items-center gap-3 div-glass py-5 px-4"
+            style={{ backgroundImage: `url(${nature.src})`, height: "150px" }}
+          >
             <Paragraph variant="b2" className="text-light">
               Quaternary:
             </Paragraph>

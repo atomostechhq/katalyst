@@ -1,19 +1,22 @@
 {
-  "name": "@atomos_tech/katerpillar",
-  "description": "website design system",
-  "version": "0.0.4-alpha",
+  "name": "katalyst-riya-test",
+  "version": "1.0.3",
   "private": false,
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "type": "module",
-  "repository": {
-    "url": "git+https://github.com/atomostechhq/katalyst.git"
-  },
+  "description": "website design system",
   "keywords": [
     "website",
     "design"
   ],
+  "homepage": "https://github.com/atomostechhq/katalyst#readme",
+  "bugs": {
+    "url": "https://github.com/atomostechhq/katalyst/issues"
+  },
+  "repository": {
+    "url": "git+https://github.com/atomostechhq/katalyst.git"
+  },
+  "license": "MIT",
+  "author": "riyavish13",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -25,6 +28,11 @@
       "require": "./dist/index.css"
     }
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "dev": "next dev",
     "prepare": "npm run build",
@@ -33,7 +41,6 @@
     "clean": "rm -rf dist",
     "build": "tsup"
   },
-  "license": "MIT",
   "dependencies": {
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -44,9 +51,6 @@
     "tailwind-merge": "^2.5.4",
     "tsup": "^8.0.2"
   },
-  "files": [
-    "dist/**/*"
-  ],
   "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
@@ -71,9 +75,5 @@
     "typescript": "^5",
     "typescript-eslint": "^7.8.0"
   },
-  "author": "riyavish13",
-  "bugs": {
-    "url": "https://github.com/atomostechhq/katalyst/issues"
-  },
-  "homepage": "https://github.com/atomostechhq/katalyst#readme"
+  "module": "dist/index.mjs"
 }
