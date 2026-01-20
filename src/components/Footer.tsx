@@ -133,7 +133,7 @@ export const FooterIcons = ({ icons }: FooterIconsProps) => {
           href={icon.link}
           key={index}
           target="_blank"
-          className="hover:bg-primary-100 dark:hover:bg-primary-800 p-1 rounded-radius-sm"
+          className="hover:bg-primary-200 dark:hover:bg-primary-800 p-1 rounded-radius-sm"
         >
           {icon.icon}
         </Link>
