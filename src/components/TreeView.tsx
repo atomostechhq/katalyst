@@ -156,9 +156,9 @@ const TreeViewItem: React.FC<TreeViewItemProps> = ({
         style={{ paddingLeft: level * 16 + 8 }}
         className={cn(
           "flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-colors select-none",
-          "hover:bg-gray-100 dark:hover:bg-gray-800",
+          "hover:bg-gray-100 dark:hover:bg-gray-800 text-dark dark:text-light",
           selected &&
-            "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 font-medium",
+            "bg-primary-50 text-primary-700 dark:bg-primary-900 dark:text-primary-300 font-medium",
           className,
         )}
       >

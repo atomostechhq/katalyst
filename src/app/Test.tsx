@@ -1,21 +1,5 @@
 "use client";
-import Accordion, {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/Accordion";
-import Card, {
-  CardBg,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/Card";
 import nature from "../../public/assets/nature.png";
-import Chip from "@/components/Chip";
-import ImageCard from "@/components/ImageCard";
-import StatsCard from "@/components/StatsCard";
 import { LuAngry, LuAnnoyed, LuHeart } from "react-icons/lu";
 import {
   Caption,
@@ -33,12 +17,52 @@ import {
   TabPanel,
   TabsContainer,
   Textarea,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Button,
+  Callout,
+  Card,
+  CardBg,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Chip,
+  CircularProgress,
+  Dropdown,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+  FillButton,
+  FloatingButton,
+  Footer,
+  FooterContent,
+  FooterHeader,
+  FooterIcons,
+  FooterList,
+  ImageCard,
+  Input,
+  Label,
+  ListPagination,
+  NestedDropdown,
+  Notice,
+  Progress,
+  Slider,
+  Toggle,
+  TreeView,
+  StatsCard,
+  Checkbox,
   Typography,
 } from "@/components";
-import Checkbox from "@/components/Checkbox";
-import Input from "@/components/Input";
-import Label from "@/components/Label";
-import Toggle from "@/components/Toggle";
 import { useTheme } from "@/context/ThemeContext";
 import React, { useEffect, useState } from "react";
 import {
@@ -59,43 +83,17 @@ import {
   RiInformationLine,
   RiInstagramLine,
   RiLinkedinLine,
+  RiMoonLine,
   RiSearch2Line,
   RiSettings4Line,
+  RiSunLine,
   RiTwitterLine,
 } from "react-icons/ri";
-import Button from "@/components/Button";
-import Footer, {
-  FooterContent,
-  FooterHeader,
-  FooterIcons,
-  FooterList,
-} from "@/components/Footer";
 import Image from "next/image";
 import { HiMiniBars3BottomRight, HiXMark } from "react-icons/hi2";
-import Slider from "@/components/Slider";
-import ListPagination from "@/components/ListPagination";
-import Callout from "@/components/Callout";
-import NestedDropdown from "@/components/NestedDropdown";
-import Dropdown from "@/components/Dropdown";
-import DropdownMenu, {
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/DropdownMenu";
-import FillButton from "@/components/FillButton";
-import FloatingButton from "@/components/FloatingButton";
 import FileUploadControl, {
   type UploadItem,
 } from "@/components/FileUploadControl";
-import Notice from "@/components/Notice";
-import Progress from "@/components/Progress";
-import CircularProgress from "@/components/CircularProgress";
-import TreeView from "@/components/TreeView";
 
 interface Option {
   label: string | number;
@@ -141,12 +139,6 @@ const footerItems = [
   },
 ];
 
-// Sample industry data that matches the BaseNestedItem interface
-// interface IndustryItem {
-//   _id: string;
-//   name: string;
-//   children?: IndustryItem[];
-// }
 const industryList = {
   data: [
     {
@@ -337,12 +329,6 @@ const industryList = {
   ],
 };
 
-const singleOptions = [
-  { label: "Option 1", value: 1 },
-  { label: "Option 2", value: 2 },
-  { label: "Option 3", value: 3 },
-];
-
 const iconsArray = [
   { icon: <RiTwitterLine />, link: "https://twitter.com" },
   { icon: <RiInstagramLine />, link: "https://instagram.com" },
@@ -357,22 +343,21 @@ const dummyData = Array.from({ length: 100 }, (_, index) => ({
 
 const Test = () => {
   const { switchDark, switchLight } = useTheme();
-  // const [selectedItem, setSelectedItem] = useState<IndustryItem | null>(null);
+  const [isDark, setIsDark] = useState(false);
 
-  // toggle
-  const [isChecked, setIsChecked] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [multiSelect, setMultiSelect] = useState<Option[]>([]);
-  const [singleSelect, setSingleSelect] = useState<Option[]>([]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setIsDark(checked);
 
-  // console.log("showMenu", showMenu);
-  // slider
-  const [sliderValue, setSliderValue] = useState<number>(50);
-
-  const handleSliderChange = (value: number) => {
-    setSliderValue(value);
+    if (checked) {
+      switchDark();
+    } else {
+      switchLight();
+    }
   };
 
+  // navbar
+  const [showMenu, setShowMenu] = useState(false);
   useEffect(() => {
     // Prevent scrolling on the body when the menu is open
     if (showMenu) {
@@ -381,55 +366,20 @@ const Test = () => {
       document.body.style.overflow = "";
     }
 
-    // Clean up to remove overflow lock when component unmounts
     return () => {
       document.body.style.overflow = "";
     };
   }, [showMenu]);
 
-  const rowsPerPage = 5;
-  const [page, setPage] = useState(0);
-
-  const handleChangePage = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const paginatedData = dummyData.slice(
-    page * rowsPerPage,
-
-    page * rowsPerPage + rowsPerPage,
-  );
-
+  // otp
   const [otp, setOtp] = useState("");
 
-  const [isAllExpanded, setIsAllExpanded] = useState(false);
+  // toggle
+  const [isChecked, setIsChecked] = useState(false);
 
-  // drawer
-  type DrawerPosition = "top" | "right" | "bottom" | "left";
-  const [openPosition, setOpenPosition] = useState<DrawerPosition | undefined>(
-    undefined,
-  );
-
-  const positions: DrawerPosition[] = ["top", "right", "bottom", "left"];
-
-  // modal
-  const [showModal, setShowModal] = useState(false);
-
-  // tabs
-  const [value, setValue] = useState("1");
-
-  const handleTabChange = (newValue: string) => {
-    setValue(newValue);
-  };
-
-  // popover
-  const [isOpen, setIsOpen] = useState(false);
-
-  // treeview
-  const [selected, setSelected] = useState<string | null>(null);
-
-  // floating button
-  const [showButton, setShowButton] = useState(false);
+  // dropdown
+  const [multiSelect, setMultiSelect] = useState<Option[]>([]);
+  const [singleSelect, setSingleSelect] = useState<Option[]>([]);
 
   // file upload
   const [items, setItems] = useState<UploadItem[]>([]);
@@ -452,19 +402,6 @@ const Test = () => {
       prev.map((item) => (item.id === id ? { ...item, ...updates } : item)),
     );
   };
-
-  // const handleUpload = async (
-  //   file: File,
-  //   onProgress: (progress: number) => void
-  // ) => {
-  //   // Simulate upload with progress
-  //   for (let progress = 0; progress <= 100; progress += 10) {
-  //     await new Promise((resolve) => setTimeout(resolve, 200));
-  //     onProgress(progress);
-  //   }
-  //   // Return the file URL (in real app, this would be from your API)
-  //   return URL.createObjectURL(file);
-  // };
 
   const handleUpload = async (
     file: File,
@@ -496,8 +433,53 @@ const Test = () => {
       window.open(item.previewUrl, "_blank");
     }
   };
+
+  // treeview
+  const [selected, setSelected] = useState<string | null>(null);
+
+  // pagination
+  const rowsPerPage = 5;
+  const [page, setPage] = useState(0);
+
+  const handleChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const paginatedData = dummyData.slice(
+    page * rowsPerPage,
+
+    page * rowsPerPage + rowsPerPage,
+  );
+
+  // accordian
+  const [isAllExpanded, setIsAllExpanded] = useState(false);
+
+  // floating button
+  const [showButton, setShowButton] = useState(false);
+
+  // slider
+  const [sliderValue, setSliderValue] = useState<number>(50);
+
+  const handleSliderChange = (value: number) => {
+    setSliderValue(value);
+  };
+
   // notice
   const [notice, setNotice] = useState(false);
+
+  // modal
+  const [showModal, setShowModal] = useState(false);
+
+  // drawer
+  type DrawerPosition = "top" | "right" | "bottom" | "left";
+  const [openPosition, setOpenPosition] = useState<DrawerPosition | undefined>(
+    undefined,
+  );
+
+  const positions: DrawerPosition[] = ["top", "right", "bottom", "left"];
+
+  // popover
+  const [isOpen, setIsOpen] = useState(false);
 
   // progress
   const [progress, setProgress] = useState(0);
@@ -507,27 +489,15 @@ const Test = () => {
     return () => clearTimeout(timer);
   }, [progress]);
 
+  // tabs
+  const [value, setValue] = useState("1");
+
+  const handleTabChange = (newValue: string) => {
+    setValue(newValue);
+  };
+
   return (
     <div className="bg-light dark:bg-dark">
-      {/* <header className="p-4 transition-colors duration-300 flex justify-between items-center sticky top-4 backdrop-blur-md mx-4 rounded-full z-[1000000]">
-        <Typography variant={"h6"}>Katalyst:</Typography>
-        <Paragraph variant={"b2"}>Current theme: {theme}</Paragraph>
-        <div className="space-x-2">
-          <button
-            onClick={switchLight}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
-          >
-            Light Mode
-          </button>
-          <button
-            onClick={switchDark}
-            className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 focus:outline-none"
-          >
-            Dark Mode
-          </button>
-        </div>
-      </header> */}
-
       <Typography variant="h6">Top Nav Glass</Typography>
       <div className="px-[30px] mobile:mx-0 tablet:mx-0 rounded-radius-md transition-colors duration-300 sticky top-2 backdrop-blur-md z-[100] border-t border-b border-b-[#0707071F] border-[#FFFFFF29]">
         <header className="w-full p-4 flex justify-between items-center h-[62px] tablet:h-[56px]">
@@ -539,22 +509,15 @@ const Test = () => {
           />
           <div className="flex gap-4 items-center">
             <section className="flex gap-1 items-center">
-              <Chip
-                className="cursor-pointer"
-                size="sm"
-                variant="primary"
-                onClick={switchLight}
-              >
-                Light Mode
-              </Chip>
-              <Chip
-                className="cursor-pointer"
-                variant="glass"
-                size="sm"
-                onClick={switchDark}
-              >
-                Dark Mode
-              </Chip>
+              <Toggle
+                id="themeToggle"
+                size="lg"
+                icon={
+                  !isDark ? <RiSunLine size={14} /> : <RiMoonLine size={14} />
+                }
+                checked={isDark}
+                onChange={handleChange}
+              />
             </section>
             <span
               className="hidden tablet:inline-block  text-dark dark:text-light"
@@ -569,8 +532,8 @@ const Test = () => {
           </div>
         </header>
       </div>
-
       <main className="space-y-5 p-4">
+        {/* Typography */}
         <section className="space-y-3">
           <Typography variant="h6">Typography</Typography>
           <Typography variant="h1">H1 Headline</Typography>
@@ -580,6 +543,7 @@ const Test = () => {
           <Typography variant="h5">H5 Headline</Typography>
           <Typography variant="h6">H6 Headline</Typography>
         </section>
+        {/* Paragraph */}
         <section className="space-y-3">
           <Typography variant="h6">Paragraph</Typography>
           <Paragraph>The quick brown fox jumps over the lazy dog</Paragraph>
@@ -593,6 +557,7 @@ const Test = () => {
             The quick brown fox jumps over the lazy dog
           </Paragraph>
         </section>
+        {/* Caption */}
         <section className="space-y-3">
           <Typography variant="h6">Caption</Typography>
           <br />
@@ -602,6 +567,7 @@ const Test = () => {
           <br />
           <Caption>The quick brown fox jumps over the lazy dog</Caption>
         </section>
+        {/* Label */}
         <section className="space-y-3">
           <Typography variant="h6">Label</Typography>
           <Label size={"sm"}>This is a Label</Label>
@@ -612,7 +578,8 @@ const Test = () => {
             This is a Label
           </Label>
         </section>
-        <section className="space-y-5 min-h-[200px]">
+        {/* Input */}
+        <section className="space-y-3 min-h-[200px]">
           <Typography variant="h6">Input</Typography>
           <Input
             type="text"
@@ -672,144 +639,8 @@ const Test = () => {
             />
           </div>
         </section>
-
-        <div className="my-10 flex items-center flex-wrap gap-5">
-          <Typography variant="h6">Nested Dropdown</Typography>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected Path IDs:", pathIds);
-            }}
-            placeholder="Select Parent"
-          />
-
-          {/* <section>
-          <h1>Custom Width and Height</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected Path IDs:", pathIds);
-            }}
-            placeholder="Choose Category"
-            width="300px"
-            height="250px"
-          />
-        </section>
-        <section>
-          <h1>Disabled State</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            disabled={true}
-          />
-        </section>
-        <section>
-          <h1>With Error State</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            disabled={true}
-          />
-        </section>
-        <section>
-          <h1>Controlled Component</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(item, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              setSelectedItem(item);
-              console.log("Selected IDs:", pathIds);
-            }}
-            placeholder="Select Parent"
-            value={selectedItem}
-          />
-        </section>
-        <section>
-          <h1>Without Clear Button</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            clearable={false}
-          />
-        </section>
-        <section>
-          <h1>Keep Dropdown Open After Selection</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            closeOnSelect={false}
-          />
-        </section>
-        <section>
-          <h1>With Custom Search Placeholder</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            searchPlaceholder="Search industries..."
-            // searchDebounce={500}
-          />
-        </section>
-        <section>
-          <h1>With Loading State</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            loading={true}
-          />
-        </section>
-        <section>
-          <h1>Custom Styling</h1>
-          <NestedDropdown
-            data={industryList?.data || []}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p?._id);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            className="custom-dropdown"
-            width="350px"
-          />
-        </section>
-        <section>
-          <h1>No Results Text Customized</h1>
-          <NestedDropdown
-            data={[]}
-            onSelect={(_, path) => {
-              const pathIds = path?.map((p) => p);
-              console.log("Selected:", pathIds);
-            }}
-            placeholder="Select Parent"
-            noResultsText="No industries found. Try another search."
-          />
-        </section> */}
-        </div>
-        <section className="space-y-4">
+        {/* OTP */}
+        <section className="space-y-3">
           <Typography variant="h6">OTP</Typography>
           <div className="space-y-2">
             <OTPInput type="text" length={4} onChange={setOtp} />
@@ -821,8 +652,8 @@ const Test = () => {
           </div>
           <Caption variant={"md"}>Note: you can also paste values</Caption>
         </section>
-        {/* dropdown */}
-        <section className="space-y-5">
+        {/* Checkbox */}
+        <section className="space-y-3">
           <Typography variant="h6">Checkbox</Typography>
           <div className="flex items-center gap-2">
             <Checkbox id="check1" />
@@ -849,7 +680,8 @@ const Test = () => {
             </Label>
           </div>
         </section>
-        <section className="space-y-5">
+        {/* Toggle */}
+        <section className="space-y-3">
           <Typography variant="h6">Toggle</Typography>
           <div className="flex items-center gap-2">
             <Toggle id="smallToggle" size="sm" />
@@ -901,7 +733,8 @@ const Test = () => {
             </Label>
           </div>
         </section>
-        <section className="flex flex-col gap-1">
+        {/* Radio */}
+        <section className="space-y-3">
           <Typography variant="h6">Radio</Typography>
           <section className="flex items-center gap-4">
             <h1>Size with Text:</h1>
@@ -957,83 +790,9 @@ const Test = () => {
             </div>
           </section>
         </section>
-        <section className="flex gap-4 items-center my-4 ">
-          <Typography variant="h6">Chips Variant</Typography>
-          <Chip
-            startIcon={<LuAnnoyed />}
-            endIcon={<LuAngry />}
-            variant="primary"
-            size="md"
-          >
-            Primary
-          </Chip>
-          <Chip variant="secondary" size="md">
-            Secondary
-          </Chip>
-          <Chip variant="default" size="md">
-            Default
-          </Chip>
-          <Chip variant="glass" size="md">
-            Glass
-          </Chip>
-        </section>
-        <section className="flex gap-4 items-center my-4">
-          <Typography variant={"h6"}>Sizes - </Typography>
-          <Chip variant="default" size="xs">
-            Default
-          </Chip>
-          <Chip endIcon={<LuHeart />} variant="primary" size="sm">
-            Solid
-          </Chip>
-          <Chip variant="primary" size="md">
-            Primary
-          </Chip>
-          <Chip variant="primary" size="lg">
-            Secondary
-          </Chip>
-        </section>
-        <div className="flex flex-wrap items-center gap-10">
-          <h1 className="text-lg">Multiple Dropdown</h1>
-          <Dropdown
-            options={[
-              { label: "High", value: "High", disabledOption: true },
-              { label: "Medium", value: "Medium" },
-              { label: "Low", value: "Low" },
-              { label: "High", value: "High" },
-              { label: "Medium", value: "Medium" },
-              { label: "Low", value: "Low" },
-              { label: "High", value: "High" },
-              { label: "Medium", value: "Medium" },
-              { label: "Low", value: "Low" },
-            ]}
-            selected={multiSelect}
-            setSelected={setMultiSelect}
-            width="300px"
-            dropdownText="Test Test"
-            multiple
-            search
-            dropdownFooter={true}
-            onApply={() => {
-              alert("Apply button clicked");
-            }}
-          />
-
-          <Dropdown
-            options={singleOptions}
-            selected={singleSelect}
-            icon={<RiGlobalLine size={16} />}
-            setSelected={setSingleSelect}
-            dropdownText="single text"
-            info="info"
-            width="300px"
-          />
-        </div>
-
-        {/* file upload */}
-        <div className="w-full mx-auto">
-          <Typography variant="h5" className="mb-4">
-            File Upload
-          </Typography>
+        {/* File Upload */}
+        <section className="space-y-3">
+          <Typography variant="h6">File Upload</Typography>
           <FileUploadControl
             items={items}
             onAddFiles={handleAddFiles}
@@ -1046,162 +805,206 @@ const Test = () => {
             maxSizeMB={15}
             hintText="Drag and drop files or click to upload"
           />
-        </div>
-
-        <section className="p-5">
-          <h1 className="text-display-sm text-primary-600">
-            Dropdown Examples:
-          </h1>
-
-          {/* Example 1: Basic Dropdown */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Basic Dropdown</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Basic Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64">
-                <DropdownMenuLabel>Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => console.log("Profile clicked")}
-                >
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => console.log("Settings clicked")}
-                >
-                  Settings
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>Disabled Item</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Dropdown with Submenu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Menu with Submenu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64">
-                <DropdownMenuLabel>Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-
-                {/* Submenu Example */}
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>More Options</DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                    <DropdownMenuItem>API Keys</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Menu One</DropdownMenuItem>
-                <DropdownMenuItem>Menu Two</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Example 3: Different Alignment */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Left Aligned Menu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Left Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="left">
-                <DropdownMenuItem onClick={() => alert("Item 1 clicked")}>
-                  Item 1
-                </DropdownMenuItem>
-                <DropdownMenuItem>Item 2</DropdownMenuItem>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Submenu</DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem>Sub Item 1</DropdownMenuItem>
-                    <DropdownMenuItem>Sub Item 2</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Example 4: Center Aligned Menu */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Center Aligned Menu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Open Center Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem>Center Item 1</DropdownMenuItem>
-                <DropdownMenuItem>Center Item 2</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Example 5: Complex Nested Structure */}
-          <div className="mb-4">
-            <h2 className="text-lg font-medium mb-2">Complex Nested Menu</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button>Complex Menu</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-72">
-                <DropdownMenuLabel>User Settings</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <div className="flex items-center gap-2">
-                    <span>👤</span>
-                    <span>Profile</span>
-                  </div>
-                </DropdownMenuItem>
-
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    <div className="flex items-center gap-2">
-                      <span>⚙️</span>
-                      <span>Settings</span>
-                    </div>
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger>
-                        Appearance
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem>Light Mode</DropdownMenuItem>
-                        <DropdownMenuItem>Dark Mode</DropdownMenuItem>
-                        <DropdownMenuItem>System</DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-                    <DropdownMenuItem>Notifications</DropdownMenuItem>
-                    <DropdownMenuItem>Privacy</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600 hover:bg-red-50">
-                  <div className="flex items-center gap-2">
-                    <span>🚪</span>
-                    <span>Logout</span>
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        </section>
+        {/* Dropdown */}
+        <section className="space-y-3">
+          <Typography variant="h6">Dropdown</Typography>
+          <div className="flex flex-wrap items-center gap-10">
+            <Dropdown
+              options={[
+                { label: "High", value: "High", disabledOption: true },
+                { label: "Medium", value: "Medium" },
+                { label: "Low", value: "Low" },
+                { label: "High", value: "High" },
+                { label: "Medium", value: "Medium" },
+                { label: "Low", value: "Low" },
+                { label: "High", value: "High" },
+                { label: "Medium", value: "Medium" },
+                { label: "Low", value: "Low" },
+              ]}
+              selected={multiSelect}
+              setSelected={setMultiSelect}
+              width="300px"
+              dropdownText="Multiple Dropdown"
+              multiple
+              search
+              dropdownFooter={true}
+              onApply={() => {
+                alert("Apply button clicked");
+              }}
+            />
+            <Dropdown
+              options={[
+                { label: "Option 1", value: 1 },
+                { label: "Option 2", value: 2 },
+                { label: "Option 3", value: 3 },
+              ]}
+              selected={singleSelect}
+              icon={<RiGlobalLine size={16} />}
+              setSelected={setSingleSelect}
+              dropdownText="Single Dropdown"
+              info="info"
+              width="300px"
+            />
           </div>
         </section>
-        <div className="grid grid-cols-2 gap-4 p-8 w-full whitespace-nowrap">
-          {/* Top-Left */}
-          <div className="flex justify-center gap-6">
+        {/* Nested Dropdown */}
+        <section className="flex items-center flex-wrap gap-5">
+          <Typography variant="h6">Nested Dropdown</Typography>
+          <NestedDropdown
+            data={industryList?.data || []}
+            onSelect={(_, path) => {
+              const pathIds = path?.map((p) => p?._id);
+              console.log("Selected Path IDs:", pathIds);
+            }}
+            placeholder="Select Parent"
+          />
+        </section>
+        {/* Dropdown Menu */}
+        <section className="space-y-3">
+          <Typography variant="h6">Dropdown Menu</Typography>
+          <div className="flex flex-wrap items-center gap-3">
+            <div>
+              <Paragraph variant={"b3"}>Basic Dropdown</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Basic Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64">
+                  <DropdownMenuLabel>Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => console.log("Profile clicked")}
+                  >
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => console.log("Settings clicked")}
+                  >
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem disabled>Disabled Item</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Dropdown with Submenu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Menu with Submenu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64">
+                  <DropdownMenuLabel>Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+
+                  {/* Submenu Example */}
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      More Options
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem>Billing</DropdownMenuItem>
+                      <DropdownMenuItem>Support</DropdownMenuItem>
+                      <DropdownMenuItem>API Keys</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Menu One</DropdownMenuItem>
+                  <DropdownMenuItem>Menu Two</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Left Aligned Menu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Left Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="left">
+                  <DropdownMenuItem onClick={() => alert("Item 1 clicked")}>
+                    Item 1
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>Item 2</DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Submenu</DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem>Sub Item 1</DropdownMenuItem>
+                      <DropdownMenuItem>Sub Item 2</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Center Aligned Menu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Open Center Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+                  <DropdownMenuItem>Center Item 1</DropdownMenuItem>
+                  <DropdownMenuItem>Center Item 2</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div>
+              <Paragraph variant={"b3"}>Complex Nested Menu</Paragraph>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button size={"xs"}>Complex Menu</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-72">
+                  <DropdownMenuLabel>User Settings</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <div className="flex items-center gap-2">
+                      <span>👤</span>
+                      <span>Profile</span>
+                    </div>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <div className="flex items-center gap-2">
+                        <span>⚙️</span>
+                        <span>Settings</span>
+                      </div>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                          Appearance
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem>Light Mode</DropdownMenuItem>
+                          <DropdownMenuItem>Dark Mode</DropdownMenuItem>
+                          <DropdownMenuItem>System</DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuSub>
+                      <DropdownMenuItem>Notifications</DropdownMenuItem>
+                      <DropdownMenuItem>Privacy</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-red-600 hover:bg-red-50">
+                    <div className="flex items-center gap-2">
+                      <span>🚪</span>
+                      <span>Logout</span>
+                    </div>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+          <div className="flex items-center gap-6 p-5">
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Top</Button>
+                <Button size={"xs"}>Top</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="top">
                 <DropdownMenuLabel>Top Position</DropdownMenuLabel>
@@ -1220,7 +1023,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Bottom</Button>
+                <Button size={"xs"}>Bottom</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="bottom">
                 <DropdownMenuLabel>Bottom Position</DropdownMenuLabel>
@@ -1239,7 +1042,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Left</Button>
+                <Button size={"xs"}>Left</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="left">
                 <DropdownMenuLabel>Left Position</DropdownMenuLabel>
@@ -1258,7 +1061,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Right</Button>
+                <Button size={"xs"}>Right</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="right">
                 <DropdownMenuLabel>Right Position</DropdownMenuLabel>
@@ -1277,7 +1080,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Center</Button>
+                <Button size={"xs"}>Center</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="center">
                 <DropdownMenuLabel>Center Aligned</DropdownMenuLabel>
@@ -1296,7 +1099,7 @@ const Test = () => {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button>Wide Menu</Button>
+                <Button size={"xs"}>Wide Menu</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-80" align="end">
                 <DropdownMenuLabel>Wide Menu (320px)</DropdownMenuLabel>
@@ -1327,339 +1130,356 @@ const Test = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </div>
-        {/* tree view */}
-        <section className="my-5 w-1/2 border p-5">
-          <h1 className="text-display-sm text-primary-600">Tree View:</h1>
-          <TreeView
-            aria-label="Project files"
-            defaultExpandedIds={["frontend"]}
-          >
-            {/* FRONTEND SECTION */}
-            <TreeView.Item
-              id="frontend"
-              onSelect={setSelected}
-              selected={selected === "frontend"}
-            >
-              <TreeView.LeadingVisual>
-                <RiAlertFill />{" "}
-              </TreeView.LeadingVisual>{" "}
-              Frontend
-              <TreeView.SubTree>
-                <TreeView.Item
-                  id="frontend-react"
-                  onSelect={setSelected}
-                  selected={selected === "frontend-react"}
-                >
-                  React App
-                  <TreeView.SubTree>
-                    <TreeView.Item
-                      id="frontend-react-components"
-                      onSelect={setSelected}
-                      selected={selected === "frontend-react-components"}
-                    >
-                      <TreeView.LeadingVisual>
-                        <RiAlertFill />{" "}
-                      </TreeView.LeadingVisual>{" "}
-                      Components
-                      <TreeView.SubTree>
-                        <TreeView.Item
-                          id="frontend-react-components-button"
-                          onSelect={setSelected}
-                          selected={
-                            selected === "frontend-react-components-button"
-                          }
-                        >
-                          <Button
-                            onClick={() => {
-                              alert("clicked");
-                            }}
-                          >
-                            Click
-                          </Button>
-                        </TreeView.Item>
-                        <TreeView.Item
-                          id="frontend-react-components-modal"
-                          onSelect={setSelected}
-                          selected={
-                            selected === "frontend-react-components-modal"
-                          }
-                        >
-                          Modal
-                        </TreeView.Item>
-                      </TreeView.SubTree>
-                    </TreeView.Item>
-
-                    <TreeView.Item
-                      id="frontend-react-hooks"
-                      onSelect={setSelected}
-                      selected={selected === "frontend-react-hooks"}
-                    >
-                      Hooks
-                    </TreeView.Item>
-                    <TreeView.Item
-                      id="frontend-react-context"
-                      onSelect={setSelected}
-                      selected={selected === "frontend-react-context"}
-                    >
-                      Context
-                    </TreeView.Item>
-                  </TreeView.SubTree>
-                </TreeView.Item>
-
-                <TreeView.Item
-                  id="frontend-next"
-                  onSelect={setSelected}
-                  selected={selected === "frontend-next"}
-                >
-                  Next.js App
-                  <TreeView.SubTree>
-                    <TreeView.Item
-                      id="frontend-next-pages"
-                      onSelect={setSelected}
-                      selected={selected === "frontend-next-pages"}
-                    >
-                      Pages
-                    </TreeView.Item>
-                    <TreeView.Item
-                      id="frontend-next-api"
-                      onSelect={setSelected}
-                      selected={selected === "frontend-next-api"}
-                    >
-                      API Routes
-                    </TreeView.Item>
-                  </TreeView.SubTree>
-                </TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-
-            {/* BACKEND SECTION */}
-            <TreeView.Item
-              id="backend"
-              onSelect={setSelected}
-              selected={selected === "backend"}
-            >
-              Backend
-              <TreeView.SubTree>
-                <TreeView.Item
-                  id="backend-api"
-                  onSelect={setSelected}
-                  selected={selected === "backend-api"}
-                >
-                  API Routes
-                  <TreeView.SubTree>
-                    <TreeView.Item
-                      id="backend-api-auth"
-                      onSelect={setSelected}
-                      selected={selected === "backend-api-auth"}
-                    >
-                      Auth
-                    </TreeView.Item>
-                    <TreeView.Item
-                      id="backend-api-users"
-                      onSelect={setSelected}
-                      selected={selected === "backend-api-users"}
-                    >
-                      Users
-                    </TreeView.Item>
-                    <TreeView.Item
-                      id="backend-api-products"
-                      onSelect={setSelected}
-                      selected={selected === "backend-api-products"}
-                    >
-                      Products
-                    </TreeView.Item>
-                  </TreeView.SubTree>
-                </TreeView.Item>
-
-                <TreeView.Item
-                  id="backend-database"
-                  onSelect={setSelected}
-                  selected={selected === "backend-database"}
-                >
-                  Database
-                  <TreeView.SubTree>
-                    <TreeView.Item
-                      id="backend-database-models"
-                      onSelect={setSelected}
-                      selected={selected === "backend-database-models"}
-                    >
-                      Models
-                    </TreeView.Item>
-                    <TreeView.Item
-                      id="backend-database-migrations"
-                      onSelect={setSelected}
-                      selected={selected === "backend-database-migrations"}
-                    >
-                      Migrations
-                    </TreeView.Item>
-                    <TreeView.Item
-                      id="backend-database-seeds"
-                      onSelect={setSelected}
-                      selected={selected === "backend-database-seeds"}
-                    >
-                      Seeds
-                    </TreeView.Item>
-                  </TreeView.SubTree>
-                </TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-          </TreeView>
         </section>
-        <div className="border rounded-lg p-2 bg-white dark:bg-gray-950">
-          <TreeView
-            aria-label="Project files"
-            defaultExpandedIds={["frontend"]}
-          >
-            {/* FRONTEND */}
-            <TreeView.Item id="frontend">
-              <TreeView.LeadingVisual>
-                <RiFolderFill className="text-blue-500" />
-              </TreeView.LeadingVisual>
-              Frontend
-              <TreeView.SubTree>
-                <TreeView.Item id="frontend-react">
-                  <TreeView.LeadingVisual>
-                    <RiFolderFill className="text-blue-400" />
-                  </TreeView.LeadingVisual>
-                  React App
-                  <TreeView.SubTree>
-                    <TreeView.Item id="frontend-react-components">
-                      Components
-                      <TreeView.SubTree>
-                        <TreeView.Item id="btn-js">
-                          <TreeView.LeadingVisual>
-                            <RiFileTextFill />
-                          </TreeView.LeadingVisual>
-                          Button.tsx
-                        </TreeView.Item>
-                      </TreeView.SubTree>
-                    </TreeView.Item>
-                  </TreeView.SubTree>
-                </TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-
-            {/* BACKEND */}
-            <TreeView.Item id="backend">
-              <TreeView.LeadingVisual>
-                <RiFolderFill className="text-amber-500" />
-              </TreeView.LeadingVisual>
-              Backend
-              <TreeView.SubTree>
-                <TreeView.Item id="backend-api">API Routes</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-
-            {/* SETTINGS (No SubTree) */}
-            <TreeView.Item id="settings">
-              <TreeView.LeadingVisual>
-                <RiSettings4Line />
-              </TreeView.LeadingVisual>
-              Settings
-            </TreeView.Item>
-          </TreeView>
-
-          <div className="mt-4 text-xs text-gray-500 px-2">
-            Selected: {selected || "None"}
+        {/* Button */}
+        <section className="space-y-3">
+          <Typography variant="h6">Buttons</Typography>
+          <div className="flex items-center gap-3">
+            <Paragraph variant="b2">Primary:</Paragraph>
+            <Button
+              size={"xs"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"md"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"lg"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
           </div>
-        </div>
+          <div className="flex items-center gap-3">
+            <Paragraph variant="b2">Primary Light:</Paragraph>
+            <Button
+              size={"xs"}
+              variant={"primary-light"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              variant={"primary-light"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"md"}
+              variant={"primary-light"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"lg"}
+              variant={"primary-light"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+          </div>
+          <div className="flex items-center gap-3">
+            <Paragraph variant="b2">Secondary:</Paragraph>
+            <Button
+              size={"xs"}
+              variant={"secondary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              variant={"secondary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"md"}
+              variant={"secondary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"lg"}
+              variant={"secondary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+          </div>
+          <div className="flex items-center gap-3">
+            <Paragraph variant="b2">Tertiary:</Paragraph>
+            <Button
+              size={"xs"}
+              variant={"tertiary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              variant={"tertiary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"md"}
+              variant={"tertiary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"lg"}
+              variant={"tertiary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+          </div>
+          <div
+            className="flex items-center gap-3 div-glass py-5 px-4"
+            style={{ backgroundImage: `url(${nature.src})`, height: "150px" }}
+          >
+            <Paragraph variant="b2" className="text-light">
+              Quaternary:
+            </Paragraph>
+            <Button
+              size={"xs"}
+              variant={"quaternary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              variant={"quaternary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"md"}
+              variant={"quaternary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"lg"}
+              variant={"quaternary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+          </div>
+          <div className="flex items-center gap-3">
+            <Paragraph variant="b2">Disabled:</Paragraph>
+            <Button
+              size={"sm"}
+              disabled
+              variant={"tertiary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+          </div>
+          <div className="flex items-center gap-3">
+            <Paragraph variant="b2">Rounded:</Paragraph>
+            <Button
+              size={"sm"}
+              rounded
+              variant={"primary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              rounded
+              variant={"primary-light"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              rounded
+              variant={"secondary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+            <Button
+              size={"sm"}
+              rounded
+              variant={"tertiary"}
+              startIcon={<RiAddLine />}
+              endIcon={<RiAddLine />}
+            >
+              Button
+            </Button>
+          </div>
+        </section>
+        {/* Fill Button */}
         <section>
-          <TreeView aria-label="Files changed" defaultExpandedIds={["src"]}>
-            <TreeView.Item
-              id="src"
-              onSelect={setSelected}
-              selected={selected === "src"}
+          <Typography variant="h6">Fill Button</Typography>
+          <FillButton
+            label="Button"
+            fillColor="bg-primary-600"
+            textHoverColor="group-hover:text-white"
+            icon={RiCheckLine}
+            className="w-[150px]"
+          />
+        </section>
+        {/* Floating Button */}
+        <section className="flex items-center gap-5">
+          <Typography variant="h6">Floating Button</Typography>
+          <Button
+            onClick={() => setShowButton((prev) => !prev)}
+            aria-expanded={showButton}
+          >
+            {showButton ? "Hide" : "Show"}
+          </Button>
+          {showButton && (
+            <div>
+              <FloatingButton
+                onClick={() => alert("Button Clicked!!")}
+                position="bottom-center"
+                variant={"quaternary"}
+                className="text-primary-500 border border-primary-500"
+              >
+                <RiAddLine />
+              </FloatingButton>
+              <FloatingButton
+                onClick={() => alert("Button Clicked!!")}
+                variant={"primary-light"}
+                position="bottom-left"
+              >
+                <RiAddLine />
+              </FloatingButton>
+              <FloatingButton
+                onClick={() => alert("Button Clicked!!")}
+                position="bottom-right"
+                variant={"secondary"}
+              >
+                <RiAddLine />
+              </FloatingButton>{" "}
+              <FloatingButton
+                onClick={() => alert("Button Clicked!!")}
+                position="top-left"
+                variant={"tertiary"}
+              >
+                <RiAddLine />
+              </FloatingButton>{" "}
+              <FloatingButton
+                onClick={() => alert("Button Clicked!!")}
+                position="top-right"
+              >
+                <RiAddLine />
+              </FloatingButton>
+            </div>
+          )}
+        </section>
+        {/* Slider */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Slider</Typography>
+          <Slider
+            value={sliderValue}
+            min={10}
+            max={200}
+            onChange={(e) => handleSliderChange(Number(e.target.value))}
+          />
+          <Slider
+            value={sliderValue}
+            min={10}
+            max={200}
+            size="lg"
+            onChange={(e) => handleSliderChange(Number(e.target.value))}
+          />
+        </section>
+        {/* Chip */}
+        <section className="space-y-3">
+          <Typography variant="h6">Chips</Typography>
+          <div className="flex gap-4 items-center">
+            <Typography variant="h6">Chips Variant</Typography>
+            <Chip
+              startIcon={<LuAnnoyed />}
+              endIcon={<LuAngry />}
+              variant="primary"
+              size="md"
             >
-              <TreeView.LeadingVisual>
-                <RiFolderOpenFill color="#1765dc" size={16} />
-              </TreeView.LeadingVisual>
-              src
-              <TreeView.SubTree>
-                <TreeView.Item
-                  id="src/Avatar.tsx"
-                  onSelect={setSelected}
-                  selected={selected === "src/Avatar.tsx"}
-                >
-                  <TreeView.LeadingVisual>
-                    <RiFileLine size={16} />
-                  </TreeView.LeadingVisual>
-                  Avatar.tsx
-                  <TreeView.TrailingVisual label="Added">
-                    <RiAddLine size={16} />
-                  </TreeView.TrailingVisual>
-                </TreeView.Item>
-
-                <TreeView.Item
-                  id="src/Button.tsx"
-                  onSelect={setSelected}
-                  selected={selected === "src/Button.tsx"}
-                >
-                  <TreeView.LeadingVisual>
-                    <RiFileLine size={16} />
-                  </TreeView.LeadingVisual>
-                  Button.tsx
-                  <TreeView.TrailingVisual label="Modified">
-                    <RiEditLine size={16} />
-                  </TreeView.TrailingVisual>
-                </TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-
-            <TreeView.Item
-              id="package.json"
-              onSelect={setSelected}
-              selected={selected === "package.json"}
-            >
-              <TreeView.LeadingVisual>
-                <RiFileLine size={16} />
-              </TreeView.LeadingVisual>
-              package.json
-              <TreeView.TrailingVisual label="Modified">
-                <RiEditLine size={16} />
-              </TreeView.TrailingVisual>
-            </TreeView.Item>
-          </TreeView>
+              Primary
+            </Chip>
+            <Chip variant="secondary" size="md">
+              Secondary
+            </Chip>
+            <Chip variant="default" size="md">
+              Default
+            </Chip>
+            <Chip variant="glass" size="md">
+              Glass
+            </Chip>
+          </div>
+          <div className="flex gap-4 items-center my-4">
+            <Typography variant={"h6"}>Sizes - </Typography>
+            <Chip variant="default" size="xs">
+              Default
+            </Chip>
+            <Chip endIcon={<LuHeart />} variant="primary" size="sm">
+              Solid
+            </Chip>
+            <Chip variant="primary" size="md">
+              Primary
+            </Chip>
+            <Chip variant="primary" size="lg">
+              Secondary
+            </Chip>
+          </div>
         </section>
-        <section className="my-5">
-          <h1>Allow multiple expanded (default)</h1>
-          {/* <TreeView aria-label="Example Tree" expandTopLevelByDefault> */}
-          <TreeView aria-label="Example Tree">
-            <TreeView.Item id="1">
-              Parent 1
-              <TreeView.SubTree>
-                <TreeView.Item id="1.1">Child 1</TreeView.Item>
-                <TreeView.Item id="1.2">Child 2</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-
-            <TreeView.Item id="2">
-              Parent 2
-              <TreeView.SubTree>
-                <TreeView.Item id="2.1">Child A</TreeView.Item>
-                <TreeView.Item id="2.2">Child B</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-          </TreeView>
-        </section>
-        <section className="my-5">
-          <h1>Treeview Mode (only one expanded)</h1>
-          <TreeView aria-label="Accordion Tree" allowMultiple={false}>
-            <TreeView.Item id="1">
-              Section 1
-              <TreeView.SubTree>
-                <TreeView.Item id="1.1">Item A</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-            <TreeView.Item id="2">
-              Section 2
-              <TreeView.SubTree>
-                <TreeView.Item id="2.1">Item B</TreeView.Item>
-              </TreeView.SubTree>
-            </TreeView.Item>
-          </TreeView>
-        </section>
-        <section className="space-y-4">
+        {/* Pricing Cards */}
+        <section className="space-y-3">
           <Typography variant={"h6"}>Pricing Cards</Typography>
           <div className="flex flex-wrap items-center gap-spacing-lg">
             <Card className="w-full p-spacing-md md:p-spacing-lg max-w-[333px] space-y-spacing-md bg-light border-2 border-primary-200 rounded-radius-xl">
@@ -1908,10 +1728,11 @@ const Test = () => {
             </Card>
           </div>
         </section>
-        <section>
-          <Typography variant={"h6"}>Cards: </Typography>
-          <div className="my-5">
-            <h1>Card Large</h1>
+        {/* Basic Cards */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Basic Cards</Typography>
+          <div>
+            <Paragraph variant={"b3"}>Card Large</Paragraph>
             <Card className="w-[70%] rounded-radius-lg px-[64px] py-[32px] gradientOne border-2 border-primary-500 hover:border-2 hover:border-primary-500">
               <CardHeader>
                 <CardTitle className="text-[32px] font-bold leading-[48px] text-white">
@@ -1940,8 +1761,8 @@ const Test = () => {
               </CardFooter>
             </Card>
           </div>
-          <div className="my-5">
-            <h1 className="dark:text-gray-25 text-gray-900">Card Small</h1>
+          <div>
+            <Paragraph variant={"b3"}>Card Small</Paragraph>
             <Card className="w-[711px] rounded-radius-lg p-[32px] gradientOne border-2 border-primary-500 hover:border-2 hover:border-primary-500">
               <CardHeader>
                 <CardTitle className="text-[24px] font-bold leading-[36px] text-white">
@@ -1967,11 +1788,14 @@ const Test = () => {
             </Card>
           </div>
         </section>
-        <section className="my-5">
+        {/* Image Cards */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Image Cards</Typography>
           <ImageCard
             cardTitle="Modal Card Title"
             cardDesc="Lorem ipsum dolor sit amet consectetur. Accumsan."
             className="w-[466px] h-[406px] bg-primary-100"
+            cardImg="/assets/nature.png"
           >
             <div className="my-2 w-[50%]">
               <Chip endIcon={<LuHeart />} variant="primary">
@@ -1979,8 +1803,6 @@ const Test = () => {
               </Chip>
             </div>
           </ImageCard>
-        </section>
-        <section className="my-5">
           <ImageCard
             cardTitle="Modal Card Title"
             cardDesc="Lorem ipsum dolor sit amet consectetur. Accumsan."
@@ -1994,27 +1816,30 @@ const Test = () => {
             </div>
           </ImageCard>
         </section>
-        <div className="my-5">
-          <section>
-            <h1 className="dark:text-gray-25 text-gray-900">Default</h1>
+        {/* Stats Cards */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Stats Cards</Typography>
+          <div>
+            <Paragraph variant={"b3"}>Default</Paragraph>
             <StatsCard
               className="w-[400px] h-[400px]"
               statTitle="Number"
               statDesc="Value Descritpion and other data Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, quos?"
               cardIcon={<LuAngry size={40} />}
             />
-          </section>
-          <section>
-            <h1 className="dark:text-gray-25 text-gray-900">Customise</h1>
+          </div>
+          <div>
+            <Paragraph variant={"b3"}>Customise</Paragraph>
             <StatsCard
               className="w-[400px] h-[400px] bg-gradient-to-b from-indigo-500 dark:from-cyan-500 dark:to-blue-500"
               statTitle="Number"
               statDesc="Value Descritpion and other data Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, quos?"
               cardIcon={<LuAngry size={40} />}
             />
-          </section>
-        </div>
-        <section className="my-5 space-y-3">
+          </div>
+        </section>
+        {/* List Pagination */}
+        <section className="space-y-3">
           <Typography variant="h6">List Pagination</Typography>
           <div className="flex flex-wrap items-center gap-4">
             {paginatedData.map((item) => (
@@ -2028,12 +1853,12 @@ const Test = () => {
             rowsPerPage={rowsPerPage}
           />
         </section>
-        <section className="my-5">
-          <Typography variant="h6">Skeleton: </Typography>
+        {/* Skeleton */}
+        <section className="space-y-3">
+          <Typography variant="h6">Skeleton</Typography>
           <div className="flex flex-col gap-2">
             <Skeleton animation="wave" width="200px" height="200px" />
             <Skeleton width="200px" height="200px" circle animation="shimmer" />
-            {/* Fluid text line skeletons */}
             <div className="w-[20%] min-w-[120px] max-w-[167px] h-[14px]">
               <Skeleton width="100%" height="100%" animation="pulse" />
             </div>
@@ -2043,386 +1868,9 @@ const Test = () => {
             </div>
           </div>
         </section>
-        {/* accordion */}
-        <section className="my-5">
-          <Typography variant={"h6"}>Accordion Single</Typography>
-          <Button onClick={() => setIsAllExpanded(!isAllExpanded)}>
-            {isAllExpanded ? "Collapse All" : "Expand All"}
-          </Button>
-          <Accordion
-            type="single"
-            collapsible
-            defaultOpenValues={["item-1"]}
-            className="w-full"
-          >
-            <AccordionItem value="item-1">
-              <AccordionTrigger
-                className="text-yellow-500"
-                triggerIcon={<RiAlertFill />}
-              >
-                What is your favorite template from BRIX Templates?
-              </AccordionTrigger>
-              <AccordionContent>
-                {` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.`}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>Is it styled?</AccordionTrigger>
-              <AccordionContent>
-                {` Yes. It comes with default styles that match the other components'
-              aesthetic.`}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Is it animated?</AccordionTrigger>
-              <AccordionContent>
-                {` Yes. It's animated by default, but you can disable it if you
-              prefer.`}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </section>
-        <section className="my-5">
-          <Typography variant={"h6"}>Accordion Multiple</Typography>
-          <Accordion
-            expanded={isAllExpanded}
-            type="multiple"
-            collapsible
-            className="w-full"
-          >
-            <AccordionItem value="item-1">
-              <AccordionTrigger>
-                What is your favorite template from BRIX Templates?
-              </AccordionTrigger>
-              <AccordionContent>
-                {` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.`}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2" disabled>
-              <AccordionTrigger>Is it styled?</AccordionTrigger>
-              <AccordionContent>
-                {` Yes. It comes with default styles that match the other components'
-              aesthetic.`}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Is it animated?</AccordionTrigger>
-              <AccordionContent>
-                {` Yes. It's animated by default, but you can disable it if you
-              prefer.`}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </section>
-        <section className="space-y-3">
-          <Typography variant="h6">Buttons</Typography>
-          <div className="flex items-center gap-3">
-            <Paragraph variant="b2">Primary:</Paragraph>
-            <Button
-              size={"xs"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"md"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"lg"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-          </div>
-          <div className="flex items-center gap-3">
-            <Paragraph variant="b2">Primary Light:</Paragraph>
-            <Button
-              size={"xs"}
-              variant={"primary-light"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              variant={"primary-light"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"md"}
-              variant={"primary-light"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"lg"}
-              variant={"primary-light"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-          </div>
-          <div className="flex items-center gap-3">
-            <Paragraph variant="b2">Secondary:</Paragraph>
-            <Button
-              size={"xs"}
-              variant={"secondary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              variant={"secondary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"md"}
-              variant={"secondary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"lg"}
-              variant={"secondary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-          </div>
-          <div className="flex items-center gap-3">
-            <Paragraph variant="b2">Tertiary:</Paragraph>
-            <Button
-              size={"xs"}
-              variant={"tertiary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              variant={"tertiary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"md"}
-              variant={"tertiary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"lg"}
-              variant={"tertiary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-          </div>
-          <div className="flex items-center gap-3 div-glass2 py-5 px-4">
-            <Paragraph variant="b2" className="text-light">
-              Quaternary:
-            </Paragraph>
-            <Button
-              size={"xs"}
-              variant={"quaternary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              variant={"quaternary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"md"}
-              variant={"quaternary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"lg"}
-              variant={"quaternary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-          </div>
-          <div className="flex items-center gap-3">
-            <Paragraph variant="b2">Disabled:</Paragraph>
-            <Button
-              size={"sm"}
-              disabled
-              variant={"tertiary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-          </div>
-          <div className="flex items-center gap-3">
-            <Paragraph variant="b2">Rounded:</Paragraph>
-            <Button
-              size={"sm"}
-              rounded
-              variant={"primary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              rounded
-              variant={"primary-light"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              rounded
-              variant={"secondary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-            <Button
-              size={"sm"}
-              rounded
-              variant={"tertiary"}
-              startIcon={<RiAddLine />}
-              endIcon={<RiAddLine />}
-            >
-              Button
-            </Button>
-          </div>
-        </section>
-        <section>
-          <Typography variant="h6">Fill Button:</Typography>
-          <FillButton
-            label="Button"
-            fillColor="bg-primary-600"
-            textHoverColor="group-hover:text-white"
-            icon={RiCheckLine}
-            className="w-[150px]"
-          />
-        </section>
-        <section className="flex items-center gap-5">
-          <Typography variant="h6">Floating Button:</Typography>
-          <Button
-            onClick={() => setShowButton((prev) => !prev)}
-            aria-expanded={showButton}
-          >
-            {showButton ? "Hide" : "Show"}
-          </Button>
-          {showButton && (
-            <div>
-              <FloatingButton
-                onClick={() => alert("Button Clicked!!")}
-                position="bottom-center"
-                variant={"quaternary"}
-                className="text-primary-500 border border-primary-500"
-              >
-                <RiAddLine />
-              </FloatingButton>
-              <FloatingButton
-                onClick={() => alert("Button Clicked!!")}
-                variant={"primary-light"}
-                position="bottom-left"
-              >
-                <RiAddLine />
-              </FloatingButton>
-              <FloatingButton
-                onClick={() => alert("Button Clicked!!")}
-                position="bottom-right"
-                variant={"secondary"}
-              >
-                <RiAddLine />
-              </FloatingButton>{" "}
-              <FloatingButton
-                onClick={() => alert("Button Clicked!!")}
-                position="top-left"
-                variant={"tertiary"}
-              >
-                <RiAddLine />
-              </FloatingButton>{" "}
-              <FloatingButton
-                onClick={() => alert("Button Clicked!!")}
-                position="top-right"
-              >
-                <RiAddLine />
-              </FloatingButton>
-            </div>
-          )}
-        </section>
-        <section className="space-y-5">
-          <Typography variant={"h6"}>Slider: </Typography>
-          <Slider
-            value={sliderValue}
-            min={10}
-            max={200}
-            onChange={(e) => handleSliderChange(Number(e.target.value))}
-          />
-          <Slider
-            value={sliderValue}
-            min={10}
-            max={200}
-            size="lg"
-            onChange={(e) => handleSliderChange(Number(e.target.value))}
-          />
-        </section>
+        {/* Loading */}
         <section className="flex flex-col items-center justify-center gap-2">
-          <Typography variant={"h6"}>Loading:</Typography>
+          <Typography variant={"h6"}>Loading</Typography>
           <Loading width="50px" height="50px" loaderColor="green" />
           <span className="font-bold">Hold On ...</span>
           <p className="text-sm text-gray-500">
@@ -2435,14 +1883,16 @@ const Test = () => {
             Loading <Loading width="15px" height="15px" variant="heavy" />
           </Button>
         </section>
+        {/* Spinner */}
         <section className="flex items-center gap-6">
-          <Typography variant={"h6"}>Spinner:</Typography>
+          <Typography variant={"h6"}>Spinner</Typography>
           <Spinner size="sm" />
           <Spinner size="md" />
           <Spinner size="lg" />
         </section>
-        <div className="flex   items-center gap-8">
-          <Typography variant={"h6"}>Notice: </Typography>
+        {/* Notice */}
+        <section className="flex items-center gap-8">
+          <Typography variant={"h6"}>Notice</Typography>
           <Button onClick={() => setNotice(true)}>Show Notice</Button>
           <Notice
             open={notice}
@@ -2486,9 +1936,10 @@ const Test = () => {
             noticeTitle="Notice on Bottom Right"
             position="bottom-right"
           />
-        </div>
-        <section className="my-5">
-          <Typography variant={"h6"}>Modal:</Typography>
+        </section>
+        {/* Modal */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Modal</Typography>
           <Button onClick={() => setShowModal(true)}>Show Modal</Button>
           <Modal
             showModal={showModal}
@@ -2508,8 +1959,9 @@ const Test = () => {
             </div>
           </Modal>
         </section>
-        <section className="my-5 space-y-4">
-          <Typography variant={"h6"}>Drawer:</Typography>
+        {/* Drawer */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Drawer</Typography>
           <div className="flex gap-3 flex-wrap">
             {positions.map((pos) => (
               <Button key={pos} onClick={() => setOpenPosition(pos)}>
@@ -2535,8 +1987,9 @@ const Test = () => {
             </Drawer>
           ))}
         </section>
-        <section className="my-5 space-y-4">
-          <Typography variant={"h6"}>Popover:</Typography>
+        {/* Popover */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Popover</Typography>
           <div className="flex justify-center">
             <Popover
               isOpen={isOpen}
@@ -2594,8 +2047,9 @@ const Test = () => {
             </Popover>
           </div>
         </section>
-        <section className="my-5 w-[500px] space-y-3">
-          <Typography variant={"h6"}>Progress:</Typography>
+        {/* Progress */}
+        <section className="w-[500px] space-y-3">
+          <Typography variant={"h6"}>Progress</Typography>
           <Progress
             progressColor="bg-success"
             progress={progress}
@@ -2623,8 +2077,9 @@ const Test = () => {
             progressTextPosition="bottom"
           />
         </section>
-        <section className="my-5">
-          <Typography variant={"h6"}>Circular Progress:</Typography>
+        {/* Circular Progress */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Circular Progress</Typography>
           <div className="flex items-center gap-5 py-10">
             <CircularProgress
               strokeLinecap="square"
@@ -2650,8 +2105,9 @@ const Test = () => {
             />
           </div>
         </section>
+        {/* Tabs */}
         <section>
-          <Typography variant={"h6"}>Tabs:</Typography>
+          <Typography variant={"h6"}>Tabs</Typography>
           <div className="my-5 space-y-4">
             <Paragraph variant={"b3"}>Default Tabs:</Paragraph>
             <TabsContainer value={value}>
@@ -2846,8 +2302,9 @@ const Test = () => {
             </TabsContainer>
           </div>
         </section>
-        <section className="my-5 space-y-4">
-          <Typography variant={"h6"}>Callout:</Typography>
+        {/* Callout */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Callout</Typography>
           <div className="space-y-3">
             <h1 className="text-display-xs text-primary-600">Filled:</h1>
             <Callout
@@ -2944,6 +2401,421 @@ const Test = () => {
               Access denied. Please contact the network administrator to view
               this page.
             </Callout>
+          </div>
+        </section>
+        {/* Tree View */}
+        <section className="space-y-3">
+          <Typography variant="h6">Tree View</Typography>
+          <TreeView
+            aria-label="Project files"
+            defaultExpandedIds={["frontend"]}
+            className="w-1/2 border border-gray-200 p-3 rounded-md"
+          >
+            {/* FRONTEND SECTION */}
+            <TreeView.Item
+              id="frontend"
+              onSelect={setSelected}
+              selected={selected === "frontend"}
+            >
+              <TreeView.LeadingVisual>
+                <RiAlertFill />{" "}
+              </TreeView.LeadingVisual>{" "}
+              Frontend
+              <TreeView.SubTree>
+                <TreeView.Item
+                  id="frontend-react"
+                  onSelect={setSelected}
+                  selected={selected === "frontend-react"}
+                >
+                  React App
+                  <TreeView.SubTree>
+                    <TreeView.Item
+                      id="frontend-react-components"
+                      onSelect={setSelected}
+                      selected={selected === "frontend-react-components"}
+                    >
+                      <TreeView.LeadingVisual>
+                        <RiAlertFill />{" "}
+                      </TreeView.LeadingVisual>{" "}
+                      Components
+                      <TreeView.SubTree>
+                        <TreeView.Item
+                          id="frontend-react-components-button"
+                          onSelect={setSelected}
+                          selected={
+                            selected === "frontend-react-components-button"
+                          }
+                        >
+                          <Button
+                            onClick={() => {
+                              alert("clicked");
+                            }}
+                          >
+                            Click
+                          </Button>
+                        </TreeView.Item>
+                        <TreeView.Item
+                          id="frontend-react-components-modal"
+                          onSelect={setSelected}
+                          selected={
+                            selected === "frontend-react-components-modal"
+                          }
+                        >
+                          Modal
+                        </TreeView.Item>
+                      </TreeView.SubTree>
+                    </TreeView.Item>
+
+                    <TreeView.Item
+                      id="frontend-react-hooks"
+                      onSelect={setSelected}
+                      selected={selected === "frontend-react-hooks"}
+                    >
+                      Hooks
+                    </TreeView.Item>
+                    <TreeView.Item
+                      id="frontend-react-context"
+                      onSelect={setSelected}
+                      selected={selected === "frontend-react-context"}
+                    >
+                      Context
+                    </TreeView.Item>
+                  </TreeView.SubTree>
+                </TreeView.Item>
+
+                <TreeView.Item
+                  id="frontend-next"
+                  onSelect={setSelected}
+                  selected={selected === "frontend-next"}
+                >
+                  Next.js App
+                  <TreeView.SubTree>
+                    <TreeView.Item
+                      id="frontend-next-pages"
+                      onSelect={setSelected}
+                      selected={selected === "frontend-next-pages"}
+                    >
+                      Pages
+                    </TreeView.Item>
+                    <TreeView.Item
+                      id="frontend-next-api"
+                      onSelect={setSelected}
+                      selected={selected === "frontend-next-api"}
+                    >
+                      API Routes
+                    </TreeView.Item>
+                  </TreeView.SubTree>
+                </TreeView.Item>
+              </TreeView.SubTree>
+            </TreeView.Item>
+
+            {/* BACKEND SECTION */}
+            <TreeView.Item
+              id="backend"
+              onSelect={setSelected}
+              selected={selected === "backend"}
+            >
+              Backend
+              <TreeView.SubTree>
+                <TreeView.Item
+                  id="backend-api"
+                  onSelect={setSelected}
+                  selected={selected === "backend-api"}
+                >
+                  API Routes
+                  <TreeView.SubTree>
+                    <TreeView.Item
+                      id="backend-api-auth"
+                      onSelect={setSelected}
+                      selected={selected === "backend-api-auth"}
+                    >
+                      Auth
+                    </TreeView.Item>
+                    <TreeView.Item
+                      id="backend-api-users"
+                      onSelect={setSelected}
+                      selected={selected === "backend-api-users"}
+                    >
+                      Users
+                    </TreeView.Item>
+                    <TreeView.Item
+                      id="backend-api-products"
+                      onSelect={setSelected}
+                      selected={selected === "backend-api-products"}
+                    >
+                      Products
+                    </TreeView.Item>
+                  </TreeView.SubTree>
+                </TreeView.Item>
+
+                <TreeView.Item
+                  id="backend-database"
+                  onSelect={setSelected}
+                  selected={selected === "backend-database"}
+                >
+                  Database
+                  <TreeView.SubTree>
+                    <TreeView.Item
+                      id="backend-database-models"
+                      onSelect={setSelected}
+                      selected={selected === "backend-database-models"}
+                    >
+                      Models
+                    </TreeView.Item>
+                    <TreeView.Item
+                      id="backend-database-migrations"
+                      onSelect={setSelected}
+                      selected={selected === "backend-database-migrations"}
+                    >
+                      Migrations
+                    </TreeView.Item>
+                    <TreeView.Item
+                      id="backend-database-seeds"
+                      onSelect={setSelected}
+                      selected={selected === "backend-database-seeds"}
+                    >
+                      Seeds
+                    </TreeView.Item>
+                  </TreeView.SubTree>
+                </TreeView.Item>
+              </TreeView.SubTree>
+            </TreeView.Item>
+          </TreeView>
+          <TreeView
+            aria-label="Project files"
+            defaultExpandedIds={["frontend"]}
+            className="w-1/2 border border-gray-200 p-3 rounded-md"
+          >
+            {/* FRONTEND */}
+            <TreeView.Item id="frontend">
+              <TreeView.LeadingVisual>
+                <RiFolderFill className="text-blue-500" />
+              </TreeView.LeadingVisual>
+              Frontend
+              <TreeView.SubTree>
+                <TreeView.Item id="frontend-react">
+                  <TreeView.LeadingVisual>
+                    <RiFolderFill className="text-blue-400" />
+                  </TreeView.LeadingVisual>
+                  React App
+                  <TreeView.SubTree>
+                    <TreeView.Item id="frontend-react-components">
+                      Components
+                      <TreeView.SubTree>
+                        <TreeView.Item id="btn-js">
+                          <TreeView.LeadingVisual>
+                            <RiFileTextFill />
+                          </TreeView.LeadingVisual>
+                          Button.tsx
+                        </TreeView.Item>
+                      </TreeView.SubTree>
+                    </TreeView.Item>
+                  </TreeView.SubTree>
+                </TreeView.Item>
+              </TreeView.SubTree>
+            </TreeView.Item>
+
+            {/* BACKEND */}
+            <TreeView.Item id="backend">
+              <TreeView.LeadingVisual>
+                <RiFolderFill className="text-amber-500" />
+              </TreeView.LeadingVisual>
+              Backend
+              <TreeView.SubTree>
+                <TreeView.Item id="backend-api">API Routes</TreeView.Item>
+              </TreeView.SubTree>
+            </TreeView.Item>
+
+            {/* SETTINGS (No SubTree) */}
+            <TreeView.Item id="settings">
+              <TreeView.LeadingVisual>
+                <RiSettings4Line />
+              </TreeView.LeadingVisual>
+              Settings
+            </TreeView.Item>
+          </TreeView>
+          <TreeView
+            aria-label="Files changed"
+            defaultExpandedIds={["src"]}
+            className="w-1/2 border border-gray-200 p-3 rounded-md"
+          >
+            <TreeView.Item
+              id="src"
+              onSelect={setSelected}
+              selected={selected === "src"}
+            >
+              <TreeView.LeadingVisual>
+                <RiFolderOpenFill color="#1765dc" size={16} />
+              </TreeView.LeadingVisual>
+              src
+              <TreeView.SubTree>
+                <TreeView.Item
+                  id="src/Avatar.tsx"
+                  onSelect={setSelected}
+                  selected={selected === "src/Avatar.tsx"}
+                >
+                  <TreeView.LeadingVisual>
+                    <RiFileLine size={16} />
+                  </TreeView.LeadingVisual>
+                  Avatar.tsx
+                  <TreeView.TrailingVisual label="Added">
+                    <RiAddLine size={16} />
+                  </TreeView.TrailingVisual>
+                </TreeView.Item>
+
+                <TreeView.Item
+                  id="src/Button.tsx"
+                  onSelect={setSelected}
+                  selected={selected === "src/Button.tsx"}
+                >
+                  <TreeView.LeadingVisual>
+                    <RiFileLine size={16} />
+                  </TreeView.LeadingVisual>
+                  Button.tsx
+                  <TreeView.TrailingVisual label="Modified">
+                    <RiEditLine size={16} />
+                  </TreeView.TrailingVisual>
+                </TreeView.Item>
+              </TreeView.SubTree>
+            </TreeView.Item>
+
+            <TreeView.Item
+              id="package.json"
+              onSelect={setSelected}
+              selected={selected === "package.json"}
+            >
+              <TreeView.LeadingVisual>
+                <RiFileLine size={16} />
+              </TreeView.LeadingVisual>
+              package.json
+              <TreeView.TrailingVisual label="Modified">
+                <RiEditLine size={16} />
+              </TreeView.TrailingVisual>
+            </TreeView.Item>
+          </TreeView>
+          <div className="my-5">
+            <h1>Allow multiple expanded (default)</h1>
+            <TreeView
+              aria-label="Example Tree"
+              className="w-1/2 border border-gray-200 p-3 rounded-md"
+            >
+              <TreeView.Item id="1">
+                Parent 1
+                <TreeView.SubTree>
+                  <TreeView.Item id="1.1">Child 1</TreeView.Item>
+                  <TreeView.Item id="1.2">Child 2</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
+
+              <TreeView.Item id="2">
+                Parent 2
+                <TreeView.SubTree>
+                  <TreeView.Item id="2.1">Child A</TreeView.Item>
+                  <TreeView.Item id="2.2">Child B</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
+            </TreeView>
+          </div>
+          <div>
+            <h1>Treeview Mode (only one expanded)</h1>
+            <TreeView
+              aria-label="Accordion Tree"
+              allowMultiple={false}
+              className="w-1/2 border border-gray-200 p-3 rounded-md"
+            >
+              <TreeView.Item id="1">
+                Section 1
+                <TreeView.SubTree>
+                  <TreeView.Item id="1.1">Item A</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
+              <TreeView.Item id="2">
+                Section 2
+                <TreeView.SubTree>
+                  <TreeView.Item id="2.1">Item B</TreeView.Item>
+                </TreeView.SubTree>
+              </TreeView.Item>
+            </TreeView>
+          </div>
+        </section>
+        {/* Accordion */}
+        <section className="space-y-3">
+          <Typography variant={"h6"}>Accordion</Typography>
+          <div>
+            <Paragraph variant={"b3"}>Accordian Single</Paragraph>
+            <Accordion
+              type="single"
+              collapsible
+              defaultOpenValues={["item-1"]}
+              className="w-full"
+            >
+              <AccordionItem value="item-1">
+                <AccordionTrigger
+                  className="text-yellow-500"
+                  triggerIcon={<RiAlertFill />}
+                >
+                  What is your favorite template from BRIX Templates?
+                </AccordionTrigger>
+                <AccordionContent>
+                  {` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.`}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>Is it styled?</AccordionTrigger>
+                <AccordionContent>
+                  {` Yes. It comes with default styles that match the other components'
+              aesthetic.`}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger>Is it animated?</AccordionTrigger>
+                <AccordionContent>
+                  {` Yes. It's animated by default, but you can disable it if you
+              prefer.`}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+          <Button onClick={() => setIsAllExpanded(!isAllExpanded)}>
+            {isAllExpanded ? "Collapse All" : "Expand All"}
+          </Button>
+          <div>
+            <Paragraph variant={"b3"}>Accordion Multiple</Paragraph>
+            <Accordion
+              expanded={isAllExpanded}
+              type="multiple"
+              collapsible
+              className="w-full"
+            >
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  What is your favorite template from BRIX Templates?
+                </AccordionTrigger>
+                <AccordionContent>
+                  {` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.`}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2" disabled>
+                <AccordionTrigger>Is it styled?</AccordionTrigger>
+                <AccordionContent>
+                  {` Yes. It comes with default styles that match the other components'
+              aesthetic.`}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger>Is it animated?</AccordionTrigger>
+                <AccordionContent>
+                  {` Yes. It's animated by default, but you can disable it if you
+              prefer.`}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </section>
       </main>

@@ -31,7 +31,7 @@ const buttonVariants = cva(
           "bg-gray-50/[0.02] text-light backdrop-blur-[6px] hover:shadow-[inset_0px_8px_8px_-2px_#23232314] hover:backdrop-blur-md hover:bg-gray-200/10 active:bg-gray-25 active:shadow-[0px_0px_0px_3px] active:text-gray-900 active:shadow-[#46464659]",
       },
       size: {
-        xs: "text-base px-spacing-sm",
+        xs: "text-sm px-spacing-md",
         sm: "text-xl leading-[30px] px-spacing-md",
         md: "font-bold text-2xl leading-[36px] px-spacing-lg",
         lg: "font-bold text-[32px] leading-[48px] px-spacing-xl",

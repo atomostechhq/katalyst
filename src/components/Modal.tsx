@@ -41,7 +41,7 @@ export default function Modal({
   };
 
   return (
-    <>
+    <div>
       {showModal && (
         <div
           onClick={handleClickOutside}
@@ -66,6 +66,6 @@ export default function Modal({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

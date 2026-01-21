@@ -76,19 +76,19 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             {/* Arrow */}
             <div
               className={cn(
-                "absolute h-3 w-3 bg-white dark:bg-dark border border-primary-200 dark:border-primary-700 rotate-45",
+                "absolute z-0 h-3 w-3 bg-white dark:bg-dark   border-primary-200 dark:border-primary-700 rotate-45",
                 postion === "bottom-left" &&
-                  "-top-1.5 left-4 border-b-0 border-r-0",
+                  "-top-1.5 left-4 border border-b-0 border-r-0",
                 postion === "bottom-right" &&
-                  "-top-1.5 right-4 border-b-0 border-r-0",
+                  "-top-1.5 right-4 border border-b-0 border-r-0",
                 postion === "top-left" &&
-                  "-bottom-1.5 left-4 border-t-0 border-l-0",
+                  "-bottom-1.5 left-4 border border-t-0 border-l-0",
                 postion === "top-right" &&
-                  "-bottom-1.5 right-4 border-t-0 border-l-0",
+                  "-bottom-1.5 right-4 border border-t-0 border-l-0",
                 postion === "bottom-center" &&
-                  "-top-1.5 left-1/2 -translate-x-1/2 border-b-0 border-r-0",
+                  "-top-1.5 left-1/2 -translate-x-1/2 border border-b-0 border-r-0",
                 postion === "top-center" &&
-                  "-bottom-1.5 left-1/2 -translate-x-1/2 border-t-0 border-l-0",
+                  "-bottom-1.5 left-1/2 -translate-x-1/2 border border-t-0 border-l-0",
               )}
             />
 

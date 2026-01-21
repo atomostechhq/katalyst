@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { cn } from "@/utils/util";
 import Button, { type ButtonProps } from "./Button";

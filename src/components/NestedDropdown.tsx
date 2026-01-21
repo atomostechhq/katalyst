@@ -1,6 +1,12 @@
 "use client";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { cn } from "@/utils/util";
 
 // Base interface that users can extend
